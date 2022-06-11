@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useState } from "react";
+import "./App.css";
+import Menu from "./components/Menu";
+import Quiz from "./components/Quiz";
+import Score from "./components/Score";
+
+export const DataContext = createContext();
 
 function App() {
+  const [appState, setAppState] = useState("menu");
+  const [score, setScore] = useState(0);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DataContext.Provider value={{ appState, setAppState, score, setScore }}>
+      <div className="App">
+        <h1>Web Development Quiz</h1>
+        {appState === "menu" && <Menu />}
+        {appState === "quiz" && <Quiz />}
+        {appState === "score" && <Score />}
+      </div>
+    </DataContext.Provider>
   );
 }
 
 export default App;
+
+// context ถูกนำมาใช้ในกรณีที่ต้องการประกาศ global variable ภายในแอพ ก็คือ ส่วนของ state
+// ต้องการอยากให้ state ส่วนใดมีการเปลี่ยนแปลงค่า ระหว่างที่รันตัวแอพขึ้นมา
